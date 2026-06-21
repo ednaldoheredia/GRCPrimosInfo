@@ -105,6 +105,14 @@ jobs:
           FILE=./publish/appsettings.json
           VERSION="${{ needs.versionamento.outputs.version }}"
 
+          echo "Validando JSON antes de atualizar versão..."
+
+          if ! jq empty "$FILE"; then
+            echo "ERRO: appsettings.json inválido no publish"
+            cat "$FILE"
+            exit 1
+          fi
+
           tmp=$(mktemp)
           jq --arg v "$VERSION" '.MY_APP_VERSION = $v' "$FILE" > "$tmp" && mv "$tmp" "$FILE"
 
