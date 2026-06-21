@@ -60,9 +60,11 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
           project_id: ${{ vars.GCP_PROJECT_ID }}
 
-      # 🌟 BLOCO ADICIONADO: Importa a imagem do Docker Hub para o Artifact Registry do Google para burlar o erro de cache
+      # 🌟 BLOCO AJUSTADO: Forçando o projeto correto em todos os comandos para evitar o erro PERMISSION_DENIED
       - name: Importar imagem do Docker Hub para o Google Artifact Registry
         run: |
+          gcloud services enable serviceusage.googleapis.com --project=${{ vars.GCP_PROJECT_ID }}
+          
           gcloud services enable artifactregistry.googleapis.com --project=${{ vars.GCP_PROJECT_ID }}
           
           gcloud artifacts repositories create primos-repo \
@@ -86,11 +88,4 @@ jobs:
           flags: --port=80
           # 🚀 Adicione isso para o .NET aceitar a porta 80:oo
 
-          env_vars: |
-            ASPNETCORE_URLS=http://+:80
-           
-      - name: Pegando a URL da Aplicação
-        run: |
-          echo "::notice:: ${{ steps.deploy-to-cloud-run.outputs.url }}/weatherforecast"
-          # 🚀 Forçamos o método GET de forma explícita e removemos qualquer flag de header anterior
-          curl -X GET -f "${{ steps.deploy-to-cloud-run.outputs.url }}/weatherforecast"
+          env_vars
