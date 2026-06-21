@@ -101,7 +101,10 @@ jobs:
         uses: restackio/update-json-file-action@2.1
         with:
           file: ./publish/appsettings.json
-          fields: "MY_APP_VERSION": "${{ needs.versionamento.outputs.version }}"
+          fields: |
+            {
+              "MY_APP_VERSION": "${{ needs.versionamento.outputs.version }}"
+            }
 
       - name: Upload Publish Artifact
         uses: actions/upload-artifact@v4
