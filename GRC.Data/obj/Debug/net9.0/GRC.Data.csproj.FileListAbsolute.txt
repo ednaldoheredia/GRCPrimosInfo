@@ -32,3 +32,4 @@ D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Data\obj\Debug\net9.0\refin
 D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Data\obj\Debug\net9.0\GRC.Data.pdb
 D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Data\obj\Debug\net9.0\GRC.Data.genruntimeconfig.cache
 D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Data\obj\Debug\net9.0\ref\GRC.Data.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Data\obj\Debug\net9.0\GRC.Data.sourcelink.json

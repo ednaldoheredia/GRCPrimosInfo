@@ -20,3 +20,4 @@ D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Dominio\obj\Debug\net9.0\GR
 D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Dominio\obj\Debug\net9.0\refint\GRC.Dominio.dll
 D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Dominio\obj\Debug\net9.0\GRC.Dominio.pdb
 D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Dominio\obj\Debug\net9.0\ref\GRC.Dominio.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\GRC.Dominio\obj\Debug\net9.0\GRC.Dominio.sourcelink.json
