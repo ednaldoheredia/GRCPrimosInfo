@@ -36,7 +36,7 @@ jobs:
           release-branch: master
           prefix: v
 
-      - name: Tag do Repositório
+      - name: Tag do Repositorio
         #if: github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -47,7 +47,7 @@ jobs:
           git tag ${{ steps.version.outputs.version }}
           git push origin --tags
 
-      - name: Create file versão
+      - name: Create file versao
         run: |
           echo ${{ steps.version.outputs.version }} > versao.txt
        # if: github.ref == 'refs/heads/master'
@@ -67,21 +67,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # ALTERAÇÃO 1: Atualizado de '6.0.x' para '9.0.x' para suportar seu projeto .NET 9
+      # ALTERACAO 1: Atualizado de '6.0.x' para '9.0.x' para suportar seu projeto .NET 9
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '9.0.x'
 
+      # AJUSTE DE CAMINHO: Apontando para o local correto na pasta raiz
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore GRC.WebApp/GRC.WebApp.csproj
 
+      # AJUSTE DE CAMINHO: Apontando para o local correto na pasta raiz
       - name: Build project
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build GRC.WebApp/GRC.WebApp.csproj --configuration Release --no-restore
 
+      # AJUSTE DE CAMINHO: Apontando para o local correto na pasta raiz
       - name: Test project
         run: |
-          dotnet test \
+          dotnet test GRC.WebApp/GRC.WebApp.csproj \
             --no-build \
             --configuration Release \
             --verbosity normal \
@@ -94,10 +97,10 @@ jobs:
           name: dotnet-test-results
           path: TestResults
 
-      # ALTERAÇÃO 2: Alterado de Poc_01.csproj para GRC.WebApp.csproj (nome correto do seu projeto atual)
+      # AJUSTE DE CAMINHO: Apontando para o local correto na pasta raiz
       - name: Publish Project
         run: |
-          dotnet publish GRC.WebApp.csproj \
+          dotnet publish GRC.WebApp/GRC.WebApp.csproj \
             -c Release \
             -o ./publish \
             --no-build
