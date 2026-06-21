@@ -37,8 +37,6 @@ jobs:
           prefix: v
 
       - name: Tag do Repositório
-        #if: github.ref == 'refs/heads/master'
-        #if: github.ref == 'refs/heads/master'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -51,13 +49,11 @@ jobs:
       - name: Create file versão
         run: |
           echo ${{ steps.version.outputs.version }} > versao.txt
-       # if: github.ref == 'refs/heads/master'
-   # if: github.ref == 'refs/heads/master'
+
       - uses: actions/upload-artifact@v4
         with:
           name: versao
           path: versao.txt
-       ## if: github.ref == 'refs/heads/master'
 
   build:
     runs-on: ubuntu-latest
@@ -74,14 +70,14 @@ jobs:
           dotnet-version: '6.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore GRC.WebApp/GRC.WebApp.csproj
 
       - name: Build project
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build GRC.WebApp/GRC.WebApp.csproj --configuration Release --no-restore
 
       - name: Test project
         run: |
-          dotnet test \
+          dotnet test GRC.WebApp/GRC.WebApp.csproj \
             --no-build \
             --configuration Release \
             --verbosity normal \
@@ -96,7 +92,7 @@ jobs:
 
       - name: Publish Project
         run: |
-          dotnet publish GRC.WebApp.csproj \
+          dotnet publish GRC.WebApp/GRC.WebApp.csproj \
             -c Release \
             -o ./publish \
             --no-build
@@ -105,7 +101,10 @@ jobs:
         uses: restackio/update-json-file-action@2.1
         with:
           file: ./publish/appsettings.json
-          fields: "{\"MY_APP_VERSION\": \"${{ needs.versionamento.outputs.version }}\"}"
+          fields: |
+            {
+              "MY_APP_VERSION": "${{ needs.versionamento.outputs.version }}"
+            }
 
       - name: Upload Publish Artifact
         uses: actions/upload-artifact@v4
@@ -170,7 +169,6 @@ jobs:
           docker build -t ${{ vars.DOCKERHUB_REPOSITORY }}:${{ env.version }} .
 
       - name: Tag Docker as Latest
-        #if: github.ref != 'refs/heads/master'
         run: |
           docker tag ${{ vars.DOCKERHUB_REPOSITORY }}:${{ env.version }} ${{ vars.DOCKERHUB_REPOSITORY }}:latest
 
