@@ -97,14 +97,16 @@ jobs:
             -o ./publish \
             --no-build
 
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
       - name: Tag Published Version
-        uses: restackio/update-json-file-action@2.1
-        with:
-          file: ./publish/appsettings.json
-          fields: |
-            {
-              "MY_APP_VERSION": "${{ needs.versionamento.outputs.version }}"
-            }
+        run: |
+          FILE=./publish/appsettings.json
+          VERSION="${{ needs.versionamento.outputs.version }}"
+
+          tmp=$(mktemp)
+          jq --arg v "$VERSION" '.MY_APP_VERSION = $v' "$FILE" > "$tmp" && mv "$tmp" "$FILE"
 
       - name: Upload Publish Artifact
         uses: actions/upload-artifact@v4
