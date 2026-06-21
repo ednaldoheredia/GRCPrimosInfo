@@ -60,13 +60,28 @@ jobs:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
           project_id: ${{ vars.GCP_PROJECT_ID }}
 
+      # 🌟 BLOCO ADICIONADO: Importa a imagem do Docker Hub para o Artifact Registry do Google para burlar o erro de cache
+      - name: Importar imagem do Docker Hub para o Google Artifact Registry
+        run: |
+          gcloud services enable artifactregistry.googleapis.com --project=${{ vars.GCP_PROJECT_ID }}
+          
+          gcloud artifacts repositories create primos-repo \
+            --repository-format=docker \
+            --location=${{ vars.GCP_RUN_REGION }} \
+            --project=${{ vars.GCP_PROJECT_ID }} || true
+          
+          gcloud artifacts docker images import ${{ vars.GCP_RUN_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/primos-repo/${{ vars.GCP_RUN_SERVICE }}:${{ needs.versionamento.outputs.versao }} \
+            --source=${{ needs.versionamento.outputs.docker-container-registry }} \
+            --project=${{ vars.GCP_PROJECT_ID }}
+
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
         id: deploy-to-cloud-run
         with:
           project_id: ${{ vars.GCP_PROJECT_ID }}
           service: ${{ vars.GCP_RUN_SERVICE }}
-          image: ${{ needs.versionamento.outputs.docker-container-registry }}
+          # 🌟 AJUSTADO: Agora consome a imagem que foi importada de forma nativa e segura dentro do GCP
+          image: ${{ vars.GCP_RUN_REGION }}-docker.pkg.dev/${{ vars.GCP_PROJECT_ID }}/primos-repo/${{ vars.GCP_RUN_SERVICE }}:${{ needs.versionamento.outputs.versao }}
           region: ${{ vars.GCP_RUN_REGION }}
           flags: --port=80
           # 🚀 Adicione isso para o .NET aceitar a porta 80:oo
