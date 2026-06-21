@@ -1,0 +1,15 @@
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\bin\Debug\net9.0\Clientes.Dominio.deps.json
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\bin\Debug\net9.0\Clientes.Dominio.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\bin\Debug\net9.0\Clientes.Dominio.pdb
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\bin\Debug\net9.0\Clientes.Data.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\bin\Debug\net9.0\Clientes.Data.pdb
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\Clientes.Dominio.csproj.AssemblyReference.cache
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\Clientes.Dominio.GeneratedMSBuildEditorConfig.editorconfig
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\Clientes.Dominio.AssemblyInfoInputs.cache
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\Clientes.Dominio.AssemblyInfo.cs
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\Clientes.Dominio.csproj.CoreCompileInputs.cache
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\Clientes.3ABEE5D7.Up2Date
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\Clientes.Dominio.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\refint\Clientes.Dominio.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\Clientes.Dominio.pdb
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\obj\Debug\net9.0\ref\Clientes.Dominio.dll

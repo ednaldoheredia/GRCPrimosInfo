@@ -1,0 +1,4 @@
+﻿Build started at 15:08...
+1>------ Build started: Project: Clientes.Dominio, Configuration: Debug Any CPU ------
+1>Clientes.Dominio -> D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Dominio\bin\Debug\net9.0\Clientes.Dominio.dll
+2>------ Build started: Project: Clientes.WebApp, Configuration: Debug Any CPU ------

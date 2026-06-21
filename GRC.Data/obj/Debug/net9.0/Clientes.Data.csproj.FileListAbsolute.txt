@@ -1,0 +1,14 @@
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\bin\Debug\net9.0\Clientes.Data.deps.json
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\bin\Debug\net9.0\Clientes.Data.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\bin\Debug\net9.0\Clientes.Data.pdb
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\Clientes.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\Clientes.Data.AssemblyInfoInputs.cache
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\Clientes.Data.AssemblyInfo.cs
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\Clientes.Data.csproj.CoreCompileInputs.cache
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\Clientes.Data.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\refint\Clientes.Data.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\Clientes.Data.pdb
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\ref\Clientes.Data.dll
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\bin\Debug\net9.0\Clientes.Data.runtimeconfig.json
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\Clientes.Data.csproj.AssemblyReference.cache
+D:\Estudos\MvcCore\PraticaConceitos\Clientes\src\Clientes.Data\obj\Debug\net9.0\Clientes.Data.genruntimeconfig.cache
