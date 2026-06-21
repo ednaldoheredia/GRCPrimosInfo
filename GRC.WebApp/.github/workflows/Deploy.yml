@@ -1,0 +1,81 @@
+﻿name: Deploy Application
+
+on: 
+  workflow_run:
+    workflows: ["Build Project"] 
+    types:
+      - completed
+
+env:
+  DOCKER_IMAGE_REGISTRY: "${{ vars.DOCKER_CONTAINER_REGISTRY }}/${{ vars.DOCKERHUB_REPOSITORY }}"
+
+jobs:
+  versionamento:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    outputs:
+      versao: ${{ steps.get-version.outputs.versao }}
+      docker-container-registry: ${{ steps.docker-image-registry.outputs.docker-container-registry }}
+
+    steps:
+      - name: Download Versao Artifact
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          # 💡 Importante: use underline (_) e não hífen (-) aqui
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          run_id: ${{ github.event.workflow_run.id }}
+          name: versao
+          path: ./
+     
+      - name: Get version from file
+        id: get-version
+        run: |
+          VALUE=$(cat ./versao.txt)
+          echo "::notice:: $VALUE"
+          echo "versao=$VALUE" >> "$GITHUB_OUTPUT"           
+
+      - name: Generate docker image registry
+        id: docker-image-registry
+        run: |
+          echo "docker-container-registry=${{ vars.DOCKER_CONTAINER_REGISTRY }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ steps.get-version.outputs.versao }}" >> "$GITHUB_OUTPUT" 
+
+  deploy-to-google-cloud:
+    name: Deploy to Google Cloud
+    needs: versionamento
+    runs-on: ubuntu-latest
+    permissions:     
+      id-token: write    
+      contents: read     
+    strategy:
+      matrix:
+        environment: [staging, production]
+    environment: ${{ matrix.environment }}
+    
+    steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+
+      - name: Deploy to Cloud Run
+        uses: google-github-actions/deploy-cloudrun@v2
+        id: deploy-to-cloud-run
+        with:
+          project_id: ${{ vars.GCP_PROJECT_ID }}
+          service: ${{ vars.GCP_RUN_SERVICE }}
+          image: ${{ needs.versionamento.outputs.docker-container-registry }}
+          region: ${{ vars.GCP_RUN_REGION }}
+          flags: --port=80
+          # 🚀 Adicione isso para o .NET aceitar a porta 80:oo
+
+          env_vars: |
+            ASPNETCORE_URLS=http://+:80
+           
+      - name: Pegando a URL da Aplicação
+        run: |
+          echo "::notice:: ${{ steps.deploy-to-cloud-run.outputs.url }}/weatherforecast"
+          # 🚀 Forçamos o método GET de forma explícita e removemos qualquer flag de header anterior
+          curl -X GET -f "${{ steps.deploy-to-cloud-run.outputs.url }}/weatherforecast"

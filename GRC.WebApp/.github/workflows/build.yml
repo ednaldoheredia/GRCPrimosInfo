@@ -1,0 +1,186 @@
+name: Build Project
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  versionamento:
+    runs-on: ubuntu-latest
+    name: Versionamento
+    permissions:
+      contents: write
+
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Git Version
+        id: version
+        uses: codacy/git-version@2.8.0
+        with:
+          release-branch: master
+          prefix: v
+
+      - name: Tag do Repositório
+        #if: github.ref == 'refs/heads/master'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "::notice:: ${{ steps.version.outputs.version }}"
+          git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --global user.name "${{ github.actor }}"
+          git tag ${{ steps.version.outputs.version }}
+          git push origin --tags
+
+      - name: Create file versão
+        run: |
+          echo ${{ steps.version.outputs.version }} > versao.txt
+       # if: github.ref == 'refs/heads/master'
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: versao
+          path: versao.txt
+       ## if: github.ref == 'refs/heads/master'
+
+  build:
+    runs-on: ubuntu-latest
+    name: Build Project
+    needs: versionamento
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ALTERAÇÃO 1: Atualizado de '6.0.x' para '9.0.x' para suportar seu projeto .NET 9
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build project
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Test project
+        run: |
+          dotnet test \
+            --no-build \
+            --configuration Release \
+            --verbosity normal \
+            --logger trx \
+            --results-directory "TestResults"
+
+      - name: Upload Test Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: dotnet-test-results
+          path: TestResults
+
+      # ALTERAÇÃO 2: Alterado de Poc_01.csproj para GRC.WebApp.csproj (nome correto do seu projeto atual)
+      - name: Publish Project
+        run: |
+          dotnet publish GRC.WebApp.csproj \
+            -c Release \
+            -o ./publish \
+            --no-build
+
+      - name: Tag Published Version
+        uses: restackio/update-json-file-action@2.1
+        with:
+          file: ./publish/appsettings.json
+          fields: "{\"MY_APP_VERSION\": \"${{ needs.versionamento.outputs.version }}\"}"
+
+      - name: Upload Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: web
+          path: ./publish
+
+  code-security-check:
+    name: Code Security Check
+    needs: versionamento
+    runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master'
+
+    permissions:
+      security-events: write
+      packages: read
+      actions: read
+      contents: read
+
+    strategy:
+      matrix:
+        include:
+          - name: Backend
+            language: csharp
+            build-mode: autobuild
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: github/codeql-action/init@v3
+        name: Initialize CodeQL - ${{ matrix.name }}
+        with:
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix.build-mode }}
+
+      - uses: github/codeql-action/analyze@v3
+        name: Analyze code - ${{ matrix.name }}
+        with:
+          category: "/language:${{ matrix.language }}"
+
+  build-docker-image:
+    name: Packing and Publish
+    needs:
+      - versionamento
+      - build
+
+    runs-on: ubuntu-latest
+
+    env:
+      version: ${{ needs.versionamento.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: web
+          path: ./publish
+
+      - name: Docker build Imagem
+        run: |
+          docker build -t ${{ vars.DOCKERHUB_REPOSITORY }}:${{ env.version }} .
+
+      - name: Tag Docker as Latest
+        #if: github.ref != 'refs/heads/master'
+        run: |
+          docker tag ${{ vars.DOCKERHUB_REPOSITORY }}:${{ env.version }} ${{ vars.DOCKERHUB_REPOSITORY }}:latest
+
+      - name: Docker Login
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Docker Push
+        run: |
+          docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}

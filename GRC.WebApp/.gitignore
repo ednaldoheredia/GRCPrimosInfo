@@ -1,0 +1,24 @@
+﻿# Build
+bin/
+obj/
+
+# Arquivos de usuário do Visual Studio
+*.user
+
+# Configurações locais
+appsettings.Development.json
+
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+
+# Configurações do Visual Studio
+.vs/
+
+# Publicação
+publish/
+
+# Docker (caso utilize localmente)
+docker-compose.override.yml

@@ -1,0 +1,39 @@
+services:
+  web:
+    image: app-primosinfo:latest
+    container_name: grcprimosinfo
+
+    ports:
+      - "35000:80"
+      - "36000:443"
+
+    volumes:
+      - data_protection_keys:/var/data_protection_keys
+
+    depends_on:
+      - sqlserver
+
+    networks:
+      - rede-primosinfo
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sql-server-container
+    hostname: sql-server-container
+
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Mustang2026Secure99"
+
+    ports:
+      - "1433:1433"
+
+    networks:
+      - rede-primosinfo
+
+volumes:
+  data_protection_keys:
+
+networks:
+  rede-primosinfo:
+    driver: bridge
