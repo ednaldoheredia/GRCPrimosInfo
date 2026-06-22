@@ -176,7 +176,10 @@ jobs:
 
       - name: Docker build Imagem
         run: |
-          docker build -t ${{ vars.DOCKERHUB_REPOSITORY }}:${{ env.version }} .
+          docker build \
+            -f GRC.WebApp/Dockerfile \
+            -t ${{ vars.DOCKERHUB_REPOSITORY }}:${{ env.version }} \
+            GRC.WebApp
 
       - name: Tag Docker as Latest
         run: |
