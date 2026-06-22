@@ -179,7 +179,7 @@ jobs:
           docker build \
             -f GRC.WebApp/Dockerfile \
             -t ${{ vars.DOCKERHUB_REPOSITORY }}:${{ env.version }} \
-            GRC.WebApp
+            .
 
       - name: Tag Docker as Latest
         run: |
