@@ -23,7 +23,6 @@ builder.Services.AddDbContext<GRC.Data.Context.GRCDbContext>(options =>
 builder.Services.AddScoped<GRC.Data.Context.GRCDbContext>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();  
-// ❌ REMOVER ESSA LINHA
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
