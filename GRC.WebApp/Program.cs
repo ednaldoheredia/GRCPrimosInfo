@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string not found.");
 
-// Contexto do Identity (se usado para autenticação)
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
@@ -23,7 +22,6 @@ builder.Services.AddDbContext<GRC.Data.Context.GRCDbContext>(options =>
 builder.Services.AddScoped<GRC.Data.Context.GRCDbContext>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();  
-// ❌ REMOVER ESSA LINHA
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
