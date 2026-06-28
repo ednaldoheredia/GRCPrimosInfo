@@ -64,20 +64,20 @@ jobs:
         with:
           service: sql-server-service
           region: southamerica-east1
-          # CORRIGIDO: Apontando direto para a imagem real que acabamos de subir
+          # CORRIGIDO: Texto puro para não ter erro de mascaramento/variável vazia
           image: docker.io/labdevtuc/sql-server-container:latest
           
-          # Mantendo suas configurações adicionais do Cloud Run
+          # Passando os parâmetros corretamente para a Action
           flags: |
             --port=1433
             --cpu=2
             --memory=2Gi
             --no-allow-unauthenticated
-          
-          # Se você usa variáveis de ambiente ou senhas, certifique-se de preenchê-las aqui
+            
           env_vars: |
             ACCEPT_EULA=Y
             MSSQL_SA_PASSWORD=${{ secrets.MSSQL_SA_PASSWORD }}
+            
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
         id: deploy-to-cloud-run
