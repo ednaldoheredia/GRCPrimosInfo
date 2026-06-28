@@ -172,6 +172,18 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
+          # PASSO CORRIGIDO: Baixa, etiqueta e envia o SQL Server
+      - name: Pull, Tag and Push SQL Server for Staging
+        run: |
+          # 1. Baixa a imagem oficial da Microsoft
+          docker pull mcr.microsoft.com/mssql/server:2022-latest
+          
+          # 2. Etiqueta usando as suas Secrets do GitHub corretamente (sem pontos ou espaços extras)
+          docker tag mcr.microsoft.com/mssql/server:2022-latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
+          
+          # 3. Envia para o seu repositório no Docker Hub
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:latest
+
       - name: Docker Push
         run: |
           docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}
