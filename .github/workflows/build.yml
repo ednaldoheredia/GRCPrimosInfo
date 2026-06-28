@@ -177,7 +177,7 @@ jobs:
         run: |
           docker pull mcr.microsoft.com/mssql/server:2022-latest
           
-          docker tag mcr.microsoft.com/mssql/server:2022-latest ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.SQL_SERVER_REPOSITORY }}:latest
+          docker tag mcr.microsoft.com/mssql/server:2022-latest labdevtuc/sql-server-container:latest
           
           docker push ${{ secrets.SQL_SERVER_REPOSITORY }}:latest
 
