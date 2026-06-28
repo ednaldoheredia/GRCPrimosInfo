@@ -23,22 +23,23 @@ jobs:
       - name: Download Versao Artifact
         uses: dawidd6/action-download-artifact@v6
         with:
+          # 💡 Importante: use underline (_) e não hífen (-) aqui
           github_token: ${{ secrets.GITHUB_TOKEN }}
           run_id: ${{ github.event.workflow_run.id }}
           name: versao
           path: ./
-
+     
       - name: Get version from file
         id: get-version
         run: |
           VALUE=$(cat ./versao.txt)
           echo "::notice:: $VALUE"
-          echo "versao=$VALUE" >> "$GITHUB_OUTPUT"
+          echo "versao=$VALUE" >> "$GITHUB_OUTPUT"           
 
       - name: Generate docker image registry
         id: docker-image-registry
         run: |
-          echo "docker-container-registry=${{ vars.DOCKER_CONTAINER_REGISTRY }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ steps.get-version.outputs.versao }}" >> "$GITHUB_OUTPUT"
+          echo "docker-container-registry=${{ vars.DOCKER_CONTAINER_REGISTRY }}/${{ vars.DOCKERHUB_REPOSITORY }}:${{ steps.get-version.outputs.versao }}" >> "$GITHUB_OUTPUT" 
 
   deploy-to-google-cloud:
     name: Deploy to Google Cloud
@@ -51,34 +52,13 @@ jobs:
       matrix:
         environment: [staging, production]
     environment: ${{ matrix.environment }}
-
+    
     steps:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
           project_id: ${{ vars.GCP_PROJECT_ID }}
- 
-      - name: Deploy SQL Server to Cloud Run
-        uses: google-github-actions/deploy-cloudrun@v2
-        id: deploy-sql-server
-        with:
-          project_id: ${{ vars.GCP_PROJECT_ID }}
-          service: sql-server-service
-          image: docker.io/labdevtuc/sql-server-container:latest
-          region: ${{ vars.GCP_RUN_REGION }}
-
-          flags: |
-            --port=1433
-            --cpu=2
-            --memory=2Gi
-            --min-instances=1
-            --max-instances=1
-            --no-allow-unauthenticated
-
-        env_vars: |
-          ACCEPT_EULA=Y
-          MSSQL_SA_PASSWORD=${{ secrets.DB_PASSWORD }}
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
@@ -89,11 +69,13 @@ jobs:
           image: ${{ needs.versionamento.outputs.docker-container-registry }}
           region: ${{ vars.GCP_RUN_REGION }}
           flags: --port=80
+          # 🚀 Adicione isso para o .NET aceitar a porta 80:oo
+
           env_vars: |
             ASPNETCORE_URLS=http://+:80
-            ConnectionStrings__DefaultConnection=Server=${{ steps.deploy-sql-server.outputs.url }};Database=NomeDoBanco;User Id=sa;Password=${{ secrets.DB_PASSWORD }};TrustServerCertificate=True;
-
+           
       - name: Pegando a URL da Aplicação
         run: |
-          echo "::notice:: ${{ steps.deploy-to-cloud-run.outputs.url }}"
-          curl -X GET -f "${{ steps.deploy-to-cloud-run.outputs.url }}"
+          echo "::notice:: ${{ steps.deploy-to-cloud-run.outputs.url }}/weatherforecast"
+          # 🚀 Forçamos o método GET de forma explícita e removemos qualquer flag de header anterior
+          curl -X GET -f "${{ steps.deploy-to-cloud-run.outputs.url }}/weatherforecast"
