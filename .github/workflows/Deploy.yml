@@ -1,4 +1,4 @@
-﻿name: Deploy Minha
+﻿name: Deploy Application
 
 on: 
   workflow_run:
@@ -76,9 +76,9 @@ jobs:
             --max-instances=1
             --no-allow-unauthenticated
 
-        env_vars: |
-          ACCEPT_EULA=Y
-          MSSQL_SA_PASSWORD=${{ secrets.DB_PASSWORD }}
+          env_vars: |
+            ACCEPT_EULA=Y
+            MSSQL_SA_PASSWORD=${{ secrets.DB_PASSWORD }}
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
