@@ -15,6 +15,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 // CONTEXTO DO SEU SISTEMA (Garanta que esta linha exista e NÃO esteja comentada)
+// CONTEXTO DO SEU SISTEMA (Garanta que esta linha exista e NÃO esteja comentada)
 builder.Services.AddDbContext<GRC.Data.Context.GRCDbContext>(options =>
     options.UseSqlServer(connectionString));
 
