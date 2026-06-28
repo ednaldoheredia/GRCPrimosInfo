@@ -175,13 +175,10 @@ jobs:
           # PASSO CORRIGIDO: Baixa, etiqueta e envia o SQL Server
       - name: Pull, Tag and Push SQL Server for Staging
         run: |
-          # 1. Baixa a imagem oficial da Microsoft
           docker pull mcr.microsoft.com/mssql/server:2022-latest
           
-          # 2. Etiqueta usando as suas Secrets do GitHub corretamente (sem pontos ou espaços extras)
-         docker tag ${{ Secrets.SQL_SERVER_REPOSITORY }}:${{ env.version }} ${{ Secrets.SQL_SERVER_REPOSITORY }}:latest
+          docker tag ${{ Secrets.SQL_SERVER_REPOSITORY }}:${{ env.version }} ${{ Secrets.SQL_SERVER_REPOSITORY }}:latest
           
-          # 3. Envia para o seu repositório no Docker Hub
           docker push ${{ Secrets.SQL_SERVER_REPOSITORY }}:latest
 
       - name: Docker Push
