@@ -185,7 +185,7 @@ jobs:
           
           echo "[2/3] Etiquetando com texto fixo (Evita bugs de mascaramento)..."
           # Trocado os segredos por texto direto para o GitHub não mascarar o comando do Docker
-          docker tag mcr.microsoft.com/mssql/server:2022-latest labdevtuc/sql-server-container:latest
+          docker tag mcr.microsoft.com/mssql/server:2022-latest ${{ vars.DOCKERHUB_REPOSITORY }}/sql-server-container:latest
           echo "Nova tag criada localmente com sucesso!"
           
           echo "[3/3] Enviando (Pushing) para o Docker Hub..."
