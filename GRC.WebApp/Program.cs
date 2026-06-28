@@ -16,9 +16,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDbContext<GRC.Data.Context.GRCDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Registro dos seus repositórios e serviços
-// Registro dos seus repositórios e serviços
-
 builder.Services.AddScoped<GRC.Data.Context.GRCDbContext>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();  
@@ -29,8 +26,6 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
-
-
 
 var app = builder.Build();
 
