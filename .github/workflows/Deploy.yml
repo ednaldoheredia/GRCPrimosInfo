@@ -78,10 +78,12 @@ jobs:
             --cpu=2
             --memory=4Gi
             --timeout=300
+            --execution-environment=gen2
             --no-allow-unauthenticated
           env_vars: |
             ACCEPT_EULA=Y
             MSSQL_SA_PASSWORD=${{ secrets.DB_PASSWORD }}
+            MSSQL_TCP_PORT=1433
 
       - name: Deploy to Cloud Run
         id: deploy-to-cloud-run
