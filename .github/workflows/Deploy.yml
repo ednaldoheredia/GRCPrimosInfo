@@ -93,7 +93,7 @@ jobs:
           flags: --port=80
           env_vars: |
             ASPNETCORE_URLS=http://+:80
-            ConnectionStrings__DefaultConnection=Server=${{ steps.deploy-sql-server.outputs.url }};Database=NomeDoBanco;User Id=sa;Password=${{ secrets.DB_PASSWORD }};TrustServerCertificate=True;
+            ConnectionStrings__DefaultConnection=Server=${{ steps.deploy-sql-server.outputs.url }};Database=Master;User Id=sa;Password=${{ secrets.DB_PASSWORD }};TrustServerCertificate=True;
 
       - name: Pegando a URL da Aplicação
         run: |
