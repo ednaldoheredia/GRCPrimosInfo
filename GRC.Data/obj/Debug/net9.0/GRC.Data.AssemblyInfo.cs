@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GRC.Data")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+56d37265a9a55c522397898e02acc68acf9abe3c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+337c49c724d863bedceeaef148a316f70e0d8895")]
 [assembly: System.Reflection.AssemblyProductAttribute("GRC.Data")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GRC.Data")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
