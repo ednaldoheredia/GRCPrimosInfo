@@ -58,7 +58,7 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
           project_id: ${{ vars.GCP_PROJECT_ID }}
- 
+
       - name: Deploy SQL Server to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
         id: deploy-sql-server
@@ -66,19 +66,16 @@ jobs:
           project_id: ${{ vars.GCP_PROJECT_ID }}
           service: sql-server-service
           image: docker.io/labdevtuc/sql-server-container:latest
+          
           region: ${{ vars.GCP_RUN_REGION }}
-
           flags: |
             --port=1433
             --cpu=2
             --memory=2Gi
-            --min-instances=1
-            --max-instances=1
             --no-allow-unauthenticated
-
-        env_vars: |
-          ACCEPT_EULA=Y
-          MSSQL_SA_PASSWORD=${{ secrets.DB_PASSWORD }}
+          env_vars: |
+            ACCEPT_EULA=Y
+            MSSQL_SA_PASSWORD=${{ secrets.DB_PASSWORD }}
 
       - name: Deploy to Cloud Run
         uses: google-github-actions/deploy-cloudrun@v2
