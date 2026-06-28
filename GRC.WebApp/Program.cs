@@ -13,6 +13,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+// CONTEXTO DO SEU SISTEMA (Garanta que esta linha exista e NÃO esteja comentada)
 
 // CONTEXTO DO SEU SISTEMA (Garanta que esta linha exista e NÃO esteja comentada)
 // CONTEXTO DO SEU SISTEMA (Garanta que esta linha exista e NÃO esteja comentada)
