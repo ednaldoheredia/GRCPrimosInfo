@@ -65,7 +65,10 @@ jobs:
         with:
           project_id: ${{ vars.GCP_PROJECT_ID }}
           service: sql-server-service
-          image: ${{ vars.DOCKER_CONTAINER_REGISTRY }}/${{ vars.DOCKERHUB_USERNAME }}/${{ vars.SQL_SERVER_REPOSITORY }}:latest
+          
+          # CORRIGIDO: Removido o emaranhado de variáveis vazias e fixado o caminho correto
+          image: docker.io/labdevtuc/sql-server-container:latest
+          
           region: ${{ vars.GCP_RUN_REGION }}
           flags: |
             --port=1433
