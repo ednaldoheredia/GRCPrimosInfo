@@ -197,4 +197,4 @@ jobs:
 
       - name: Docker Push
         run: |
-          docker push --all-tags ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}
+          docker push --all-tags ${{ vars.DOCKERHUB_REPOSITORY }}
