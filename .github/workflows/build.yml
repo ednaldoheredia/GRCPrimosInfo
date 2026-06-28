@@ -97,25 +97,6 @@ jobs:
             -o ./publish \
             --no-build
 
-      - name: Install jq
-        run: sudo apt-get update && sudo apt-get install -y jq
-
-      - name: Tag Published Version
-        run: |
-          FILE=./publish/appsettings.json
-          VERSION="${{ needs.versionamento.outputs.version }}"
-
-          echo "Validando JSON antes de atualizar versão..."
-
-          if ! jq empty "$FILE"; then
-            echo "ERRO: appsettings.json inválido no publish"
-            cat "$FILE"
-            exit 1
-          fi
-
-          tmp=$(mktemp)
-          jq --arg v "$VERSION" '.MY_APP_VERSION = $v' "$FILE" > "$tmp" && mv "$tmp" "$FILE"
-
       - name: Upload Publish Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -190,6 +171,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+          # PASSO CORRIGIDO: Baixa, etiqueta e envia o SQL Server
+      - name: Pull, Tag and Push SQL Server for Staging
+        run: |
+          docker pull mcr.microsoft.com/mssql/server:2022-latest
+          
+          docker tag mcr.microsoft.com/mssql/server:2022-latest ${{ vars.DOCKERHUB_REPOSITORY }}/ ${{ secrets.SQL_SERVER_REPOSITORY }}:latest
+          
+          docker push ${{ secrets.SQL_SERVER_REPOSITORY }}:latest
 
       - name: Docker Push
         run: |
