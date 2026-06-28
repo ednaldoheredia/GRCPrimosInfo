@@ -197,5 +197,4 @@ jobs:
 
       - name: Docker Push
         run: |
-          # CORRIGIDO: Ajustado para empurrar as tags do repositório da aplicação web contendo seu username
           docker push --all-tags ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY }}
